@@ -4,10 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiscordPP", "DiscordPP\DiscordPP.vcxproj", "{E4F16E3B-2045-4361-A049-2A8293555C2F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ECF4C380-CACF-42CD-9AE1-C9DC2EEDCB53} = {ECF4C380-CACF-42CD-9AE1-C9DC2EEDCB53}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "httplib", "httplib\httplib.vcxproj", "{ECF4C380-CACF-42CD-9AE1-C9DC2EEDCB53}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Interface", "Interface\Interface.vcxproj", "{567AC365-795C-49DF-962B-40DC57FDA7FC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E4F16E3B-2045-4361-A049-2A8293555C2F} = {E4F16E3B-2045-4361-A049-2A8293555C2F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

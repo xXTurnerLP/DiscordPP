@@ -1,13 +1,29 @@
-#include <Windows.h>
+#include "pch.h"
 
-namespace http_get {
+enum class HeaderType : char {
+	Accept,
+	Accept_Encoding,
+	Authorization,
+	Connection,
+	Content_Encoding,
+	Content_Length,
+	Content_Type,
+	User_Agent,
+	Upgrade
+};
+
+namespace httplib {
 	typedef unsigned long RESPONSE;
-
-	class Get {
+	typedef const char* Address;
+	typedef const char* HeaderValue;
+	typedef short Port;
+	
+	class GetRequest {
 	public:
-		RESPONSE SendRequest();
-		void AddHeader();
+		RESPONSE SendRequest(Address szURI, Port nPort = 443);
+		bool AddHeader(HeaderType Header, HeaderValue szValue);
 
-		//have to make everything ASYNC and make callback functions + lambda functions (sendrequest(lambda here for the managing when the server responses, what to do with this data)
+	private:
+		std::string m_szHeaders;
 	};
 }
