@@ -10,7 +10,14 @@
 
 int main() {
 	//ToDo: Switch to WINDOWS sub, make gui with console to the side.
-	
-	httplib::GetRequest get;
-	get.AddHeader(HeaderType::Upgrade, "websocket");
+
+	httplib::GetRequest get(stdout);
+	get.AddHeader(HeaderType::User_Agent, "Sry u just got hack'd :<");
+	get.AddHeader(HeaderType::Referer, "Hacked by Turner :) - https://discord.gg/QP78V8B");
+	get.SendRequest("discordapp.com");
+
+	while (!GetAsyncKeyState(VK_ESCAPE)) {
+		Sleep(5);
+	}
+	//ToDo: free handles after request is finished
 }

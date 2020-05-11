@@ -21,12 +21,18 @@
     <ClCompile Include="src\pch\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\get\callbacks\Session.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\get\get.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\pch\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\get\callbacks\Session.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

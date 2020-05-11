@@ -9,7 +9,8 @@ enum class HeaderType : char {
 	Content_Length,
 	Content_Type,
 	User_Agent,
-	Upgrade
+	Upgrade,
+	Referer
 };
 
 namespace httplib {
@@ -20,6 +21,7 @@ namespace httplib {
 	
 	class GetRequest {
 	public:
+		GetRequest(FILE* temp_pSTDOUT);
 		RESPONSE SendRequest(Address szURI, Port nPort = 443);
 		bool AddHeader(HeaderType Header, HeaderValue szValue);
 
