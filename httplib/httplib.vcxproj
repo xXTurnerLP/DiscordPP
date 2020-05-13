@@ -22,6 +22,7 @@
     <ClCompile Include="src\get\callbacks\Session\Session.cpp" />
     <ClCompile Include="src\get\callbacks\Session\workers\dataAvail\dataAvail.cpp" />
     <ClCompile Include="src\get\callbacks\Session\workers\dataAvail\dataAvail.h" />
+    <ClCompile Include="src\get\callbacks\Session\workers\headersAvail\headersAvail.cpp" />
     <ClCompile Include="src\get\get.cpp" />
     <ClCompile Include="src\pch\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -34,6 +35,9 @@
     <ClInclude Include="src\get\callbacks\Session\Session.h" />
     <ClInclude Include="src\get\get.hpp" />
     <ClInclude Include="src\pch\pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\get\callbacks\Session\workers\headersAvail\headersAvail.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

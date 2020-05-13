@@ -3,6 +3,7 @@
 #include "Session.h"
 
 #include "workers/dataAvail/dataAvail.h"
+#include "workers/headersAvail/headersAvail.h"
 
 namespace httplib {
 	extern USHORT g_nBitFlags;
@@ -21,35 +22,12 @@ void WINAPI hSession_Callback(
 		WinHttpReceiveResponse(hInternet, 0);
 		break;
 	case WINHTTP_CALLBACK_STATUS_HEADERS_AVAILABLE: {
-		wchar_t* szHeaderData = nullptr;
-		DWORD dwHeaderDataSize = 0;
-
-		WinHttpQueryHeaders(hInternet, WINHTTP_QUERY_STATUS_CODE, WINHTTP_HEADER_NAME_BY_INDEX, nullptr, &dwHeaderDataSize, WINHTTP_NO_HEADER_INDEX);
-		if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
-			szHeaderData = new wchar_t[dwHeaderDataSize];
-			WinHttpQueryHeaders(hInternet, WINHTTP_QUERY_STATUS_CODE, WINHTTP_HEADER_NAME_BY_INDEX, szHeaderData, &dwHeaderDataSize, WINHTTP_NO_HEADER_INDEX);
-		}
-
-		if (dwHeaderDataSize == 0) {
-			httplib::g_nBitFlags = 0;
-			httplib::g_nBitFlags += (~(httplib::g_nBitFlags << 14) & 0b0010);
-			httplib::g_nBitFlags += (~(httplib::g_nBitFlags << 12) & 0b1000);
-			return;
-		}
-
-		char szBufferCode[8] = {};
-		wcstombs(szBufferCode, szHeaderData, 8);
-
-		unsigned short nStatusCode = atoi(szBufferCode);
-
-		httplib::g_nBitFlags += nStatusCode << 4;
-		httplib::g_nBitFlags += (~(httplib::g_nBitFlags << 15) & 0b0001);
-
+		std::thread(headersAvail_worker, &httplib::g_nBitFlags, hInternet).detach();
 		WinHttpQueryDataAvailable(hInternet, NULL);
 	}
 		break;
 	case WINHTTP_CALLBACK_STATUS_DATA_AVAILABLE: {
-		std::thread(dataAvail_worker, &httplib::g_nBitFlags, lpvStatusInformation, hInternet);
+		std::thread(dataAvail_worker, &httplib::g_nBitFlags, lpvStatusInformation, hInternet).detach();
 	}
 		break;
 	case WINHTTP_CALLBACK_STATUS_SECURE_FAILURE:

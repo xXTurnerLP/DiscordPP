@@ -30,6 +30,9 @@
     <ClCompile Include="src\get\callbacks\Session\workers\dataAvail\dataAvail.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\get\callbacks\Session\workers\headersAvail\headersAvail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\get\get.hpp">
@@ -41,5 +44,8 @@
     <ClInclude Include="src\get\callbacks\Session\Session.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\get\callbacks\Session\workers\headersAvail\headersAvail.h" />
   </ItemGroup>
 </Project>
