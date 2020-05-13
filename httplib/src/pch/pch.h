@@ -5,6 +5,9 @@
 #include <cwchar>
 #include <iostream>
 #include <iostream>
+#include <tuple>
+#include <vector>
+#include <thread>
 
 // WINDOWS
 #include <Windows.h>

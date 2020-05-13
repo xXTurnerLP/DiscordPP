@@ -21,7 +21,13 @@
     <ClCompile Include="src\pch\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\get\callbacks\Session.cpp">
+    <ClCompile Include="src\get\callbacks\Session\Session.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\get\callbacks\Session\workers\dataAvail\dataAvail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\get\callbacks\Session\workers\dataAvail\dataAvail.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,7 +38,7 @@
     <ClInclude Include="src\pch\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\get\callbacks\Session.h">
+    <ClInclude Include="src\get\callbacks\Session\Session.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

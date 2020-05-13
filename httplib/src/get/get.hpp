@@ -14,7 +14,7 @@ enum class HeaderType : char {
 };
 
 namespace httplib {
-	typedef unsigned long RESPONSE;
+	typedef int RESPONSE;
 	typedef const char* Address;
 	typedef const char* HeaderValue;
 	typedef short Port;
@@ -22,10 +22,15 @@ namespace httplib {
 	class GetRequest {
 	public:
 		GetRequest(FILE* temp_pSTDOUT);
+		~GetRequest();
+
 		RESPONSE SendRequest(Address szURI, Port nPort = 443);
 		bool AddHeader(HeaderType Header, HeaderValue szValue);
 
+		const char* GetData();
+
 	private:
 		std::string m_szHeaders;
+		char** m_szData;
 	};
 }

@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\get\callbacks\Session.cpp" />
+    <ClCompile Include="src\get\callbacks\Session\Session.cpp" />
+    <ClCompile Include="src\get\callbacks\Session\workers\dataAvail\dataAvail.cpp" />
+    <ClCompile Include="src\get\callbacks\Session\workers\dataAvail\dataAvail.h" />
     <ClCompile Include="src\get\get.cpp" />
     <ClCompile Include="src\pch\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -29,7 +31,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\get\callbacks\Session.h" />
+    <ClInclude Include="src\get\callbacks\Session\Session.h" />
     <ClInclude Include="src\get\get.hpp" />
     <ClInclude Include="src\pch\pch.h" />
   </ItemGroup>
