@@ -16,7 +16,7 @@ void dataAvail_worker(unsigned short* pnBitfield, LPVOID lpvDataLength, HINTERNE
 		} else {
 			char* temp_buffer = new char[strlen(httplib::g_szDataBuffer) + 1];
 			temp_buffer[strlen(httplib::g_szDataBuffer)] = 0;
-			memcpy(temp_buffer, httplib::g_szDataBuffer, strlen(httplib::g_szDataBuffer));
+			memcpy(temp_buffer, httplib::g_szDataBuffer, strlen(httplib::g_szDataBuffer)); //-V575 (PVS-Studio FalseAlarm)
 			delete[] httplib::g_szDataBuffer;
 
 			httplib::g_szDataBuffer = new char[strlen(temp_buffer) + *(DWORD*)lpvDataLength + 1];

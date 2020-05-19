@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../../httplib/src/get/get.hpp"
+#include "../../httplib/src/get.hpp"
 
 #ifdef _DEBUG
 #pragma comment(lib, "../httplib/bin/Debug_x86/httplib_Debug_x86.lib")
@@ -12,8 +12,8 @@ int main() {
 	//ToDo: Switch to WINDOWS sub, make gui with console to the side.
 	
 	httplib::GetRequest get(stdout);
-	get.AddHeader(HeaderType::Accept, "*/*");
-	int nGet = get.SendRequest("discordapp.com/api/invites/QP78V8B");
+	get.AddHeader(HeaderType::Authorization, "NTA2MjIzNjYwNDQ1NDY2NjM1.XV11Ww.X4tDwV5GwpwUvZrfTgcv11wMQv0");
+	int nGet = get.SendRequest("discordapp.com/api/channels/678958544606724115/messages?limit=1");
 
 	printf("\n\nReturn Code: %d\n\nData: %s\n", nGet, get.GetData());
 }

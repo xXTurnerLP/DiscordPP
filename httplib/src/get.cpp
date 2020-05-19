@@ -2,7 +2,7 @@
 
 #include "get.hpp"
 
-#include "callbacks/Session/Session.h"
+#include "callbacks/get_Session/Session.h"
 
 void _appendToHeader(std::string& private_member, const char* szValue, const char* szHeaderName);
 
@@ -26,6 +26,8 @@ namespace httplib {
 	USHORT g_nBitFlags = 0b0000'0000'0000'0000;
 
 	RESPONSE GetRequest::SendRequest(Address szURI, Port nPort) {
+		char* pStartEndpoint = (char*)strchr(szURI, L'/');
+
 		HINTERNET hSession = WinHttpOpen(L"", WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, WINHTTP_FLAG_ASYNC);
 		if (hSession) {
 			void* phSession_Callback = WinHttpSetStatusCallback(hSession, (WINHTTP_STATUS_CALLBACK)hSession_Callback, WINHTTP_CALLBACK_FLAG_ALL_NOTIFICATIONS, 0);
@@ -40,10 +42,10 @@ namespace httplib {
 		
 		wchar_t* szwConnectionUri;
 
-		if (strchr(szURI, L'/') != nullptr) {
-			szwConnectionUri = new wchar_t[strchr(szURI, L'/') - szURI + 1];
-			ZeroMemory(szwConnectionUri, (strchr(szURI, L'/') - szURI + 1) * sizeof(wchar_t));
-			mbstowcs(szwConnectionUri, szURI, strchr(szURI, L'/') - szURI);
+		if (pStartEndpoint != nullptr) {
+			szwConnectionUri = new wchar_t[pStartEndpoint - szURI + 1];
+			ZeroMemory(szwConnectionUri, (pStartEndpoint - szURI + 1) * sizeof(wchar_t));
+			mbstowcs(szwConnectionUri, szURI, pStartEndpoint - szURI);
 		} else {
 			szwConnectionUri = new wchar_t[strlen(szURI) + 1];
 			ZeroMemory(szwConnectionUri, (strlen(szURI) + 1) * sizeof(wchar_t));
@@ -61,10 +63,10 @@ namespace httplib {
 		delete[] szwConnectionUri;
 		
 		wchar_t* szwEndpointUri;
-		if (strchr(szURI, L'/') != nullptr) {
-			szwEndpointUri = new wchar_t[(strlen(szURI) - (strchr(szURI, L'/') - szURI)) + 1];
-			ZeroMemory(szwEndpointUri, ((strlen(szURI) - (strchr(szURI, L'/') - szURI)) + 1) * sizeof(wchar_t));
-			mbstowcs(szwEndpointUri, szURI + (strchr(szURI, L'/') - szURI), (strlen(szURI) - (strchr(szURI, L'/') - szURI)));
+		if (pStartEndpoint != nullptr) {
+			szwEndpointUri = new wchar_t[(strlen(szURI) - (pStartEndpoint - szURI)) + 1];
+			ZeroMemory(szwEndpointUri, ((strlen(szURI) - (pStartEndpoint - szURI)) + 1) * sizeof(wchar_t));
+			mbstowcs(szwEndpointUri, szURI + (pStartEndpoint - szURI), (strlen(szURI) - (pStartEndpoint - szURI)));
 		} else {
 			szwEndpointUri = (wchar_t*)L"/";
 		}
@@ -75,7 +77,7 @@ namespace httplib {
 			// TODO: Display the error message in the gui/console of DiscordPP
 			printf("TEMPORARY: GetLastError() from GetRequest::SendRequest at WinHttpOpenRequest() async: %u\n", GetLastError()); // This is temporary. Should not be used.
 		}
-		if (strchr(szURI, L'/') != nullptr) delete[] szwEndpointUri;
+		if (pStartEndpoint != nullptr) delete[] szwEndpointUri;
 
 		wchar_t* szwHeaders = strcmp(m_szHeaders.c_str(), "") ? new wchar_t[m_szHeaders.length() + 1] : nullptr;
 		if (szwHeaders != nullptr) {
@@ -83,7 +85,7 @@ namespace httplib {
 			mbstowcs(szwHeaders, m_szHeaders.c_str(), m_szHeaders.length());
 		}
 
-		if (strcmp(m_szHeaders.c_str(), "") != 0) {
+		if (strcmp(m_szHeaders.c_str(), "") != 0 && szwHeaders != nullptr) {
 			if (!WinHttpAddRequestHeaders(hRequest, szwHeaders, wcslen(szwHeaders), WINHTTP_ADDREQ_FLAG_ADD | WINHTTP_ADDREQ_FLAG_REPLACE))
 				// TODO: Display the error message in the gui/console of DiscordPP
 				printf("TEMPORARY: GetLastError() from GetRequest::SendRequest at WinHttpOpenRequest() async: %u\n", GetLastError()); // This is temporary. Should not be used.
