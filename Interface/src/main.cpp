@@ -12,7 +12,7 @@ int main() {
 	//ToDo: Switch to WINDOWS sub, make gui with console to the side.
 	
 	httplib::GetRequest get(stdout);
-	get.AddHeader(HeaderType::Authorization, "NTA2MjIzNjYwNDQ1NDY2NjM1.XV11Ww.X4tDwV5GwpwUvZrfTgcv11wMQv0");
+	get.AddHeader(HeaderType::Authorization, "token");
 	int nGet = get.SendRequest("discordapp.com/api/channels/678958544606724115/messages?limit=1");
 
 	printf("\n\nReturn Code: %d\n\nData: %s\n", nGet, get.GetData());
