@@ -44,7 +44,7 @@ void WINAPI hSession_Callback(
 		WinHttpQueryDataAvailable(hInternet, NULL);
 		break;
 	case WINHTTP_CALLBACK_STATUS_REDIRECT:
-		printf("Session handler: Redirection was attempted, and canceled. Redirect Destination: %s\n", lpvStatusInformation);
+		printf("Session handler: Redirection was attempted, and canceled. Redirect Destination: %s\n", (char*)lpvStatusInformation);
 		break;
 	}
 }

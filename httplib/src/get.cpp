@@ -79,13 +79,13 @@ namespace httplib {
 		}
 		if (pStartEndpoint != nullptr) delete[] szwEndpointUri;
 
-		wchar_t* szwHeaders = strcmp(m_szHeaders.c_str(), "") ? new wchar_t[m_szHeaders.length() + 1] : nullptr;
+		wchar_t* szwHeaders = strcmp(m_szHeadersOut.c_str(), "") ? new wchar_t[m_szHeadersOut.length() + 1] : nullptr;
 		if (szwHeaders != nullptr) {
-			ZeroMemory(szwHeaders, (m_szHeaders.length() + 1) * sizeof(wchar_t));
-			mbstowcs(szwHeaders, m_szHeaders.c_str(), m_szHeaders.length());
+			ZeroMemory(szwHeaders, (m_szHeadersOut.length() + 1) * sizeof(wchar_t));
+			mbstowcs(szwHeaders, m_szHeadersOut.c_str(), m_szHeadersOut.length());
 		}
 
-		if (strcmp(m_szHeaders.c_str(), "") != 0 && szwHeaders != nullptr) {
+		if (strcmp(m_szHeadersOut.c_str(), "") != 0 && szwHeaders != nullptr) {
 			if (!WinHttpAddRequestHeaders(hRequest, szwHeaders, wcslen(szwHeaders), WINHTTP_ADDREQ_FLAG_ADD | WINHTTP_ADDREQ_FLAG_REPLACE))
 				// TODO: Display the error message in the gui/console of DiscordPP
 				printf("TEMPORARY: GetLastError() from GetRequest::SendRequest at WinHttpOpenRequest() async: %u\n", GetLastError()); // This is temporary. Should not be used.
@@ -105,6 +105,7 @@ namespace httplib {
 		WinHttpSetOption(hRequest, WINHTTP_OPTION_DISABLE_FEATURE, &dwOption, sizeof(dwOption));
 
 		while (1) {
+			std::this_thread::sleep_for(std::chrono::microseconds(1));
 			if ((g_nBitFlags >> 3) & 1) {
 				WinHttpCloseHandle(hRequest);
 				WinHttpCloseHandle(hConnection);
@@ -123,34 +124,34 @@ namespace httplib {
 	bool GetRequest::AddHeader(HeaderType Header, HeaderValue szValue) {
 		switch (Header) {
 		case HeaderType::Accept:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Accept");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Accept");
 			break;
 		case HeaderType::Accept_Encoding:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Accept-Encoding");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Accept-Encoding");
 			break;
 		case HeaderType::Authorization:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Authorization");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Authorization");
 			break;
 		case HeaderType::Connection:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Connection");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Connection");
 			break;
 		case HeaderType::Content_Encoding:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Content-Encoding");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Content-Encoding");
 			break;
 		case HeaderType::Content_Length:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Content-Length");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Content-Length");
 			break;
 		case HeaderType::Content_Type:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Content-Type");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Content-Type");
 			break;
 		case HeaderType::User_Agent:
-			_appendToHeader(m_szHeaders, (char*)szValue, "User-Agent");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "User-Agent");
 			break;
 		case HeaderType::Upgrade:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Upgrade");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Upgrade");
 			break;
 		case HeaderType::Referer:
-			_appendToHeader(m_szHeaders, (char*)szValue, "Referer");
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Referer");
 			break;
 		default:
 			return false;

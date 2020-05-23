@@ -1,17 +1,6 @@
 #include "pch.h"
 
-enum class HeaderType : char {
-	Accept,
-	Accept_Encoding,
-	Authorization,
-	Connection,
-	Content_Encoding,
-	Content_Length,
-	Content_Type,
-	User_Agent,
-	Upgrade,
-	Referer
-};
+#include "HeaderTypes.h"
 
 namespace httplib {
 	typedef int RESPONSE;
@@ -30,7 +19,7 @@ namespace httplib {
 		const char* GetData();
 
 	private:
-		std::string m_szHeaders;
+		std::string m_szHeadersOut;
 		char** m_szData;
 	};
 }
