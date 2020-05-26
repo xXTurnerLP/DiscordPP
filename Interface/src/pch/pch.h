@@ -1,3 +1,5 @@
+#pragma once
+
 // STL
 #include <iostream>
 #include <stdio.h>

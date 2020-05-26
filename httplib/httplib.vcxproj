@@ -19,28 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\callbacks\get_Session\Session.cpp" />
-    <ClCompile Include="src\callbacks\get_Session\workers\dataAvail\dataAvail.cpp" />
-    <ClCompile Include="src\callbacks\get_Session\workers\headersAvail\headersAvail.cpp" />
-    <ClCompile Include="src\get.cpp" />
+    <ClCompile Include="src\callbacks\WinHTTPSession\Session.cpp" />
+    <ClCompile Include="src\callbacks\WinHTTPSession\workers\dataAvail\dataAvail.cpp" />
+    <ClCompile Include="src\callbacks\WinHTTPSession\workers\headersAvail\headersAvail.cpp" />
+    <ClCompile Include="src\HTTPMethod\get\get.cpp" />
+    <ClCompile Include="src\HTTPMethod\HTTPRequest.cpp" />
     <ClCompile Include="src\pch\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\post.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\callbacks\get_Session\Session.h" />
-    <ClInclude Include="src\callbacks\get_Session\workers\dataAvail\dataAvail.h" />
-    <ClInclude Include="src\get.hpp" />
-    <ClInclude Include="src\HeaderTypes.h" />
+    <ClInclude Include="src\callbacks\WinHTTPSession\Session.h" />
+    <ClInclude Include="src\callbacks\WinHTTPSession\workers\dataAvail\dataAvail.h" />
+    <ClInclude Include="src\callbacks\WinHTTPSession\workers\headersAvail\headersAvail.h" />
+    <ClInclude Include="src\HTTPMethod\get\get.hpp" />
+    <ClInclude Include="src\HTTPMethod\HeaderTypes.h" />
+    <ClInclude Include="src\HTTPMethod\HTTPRequest.hpp" />
     <ClInclude Include="src\pch\pch.h" />
-    <ClInclude Include="src\post.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\callbacks\get_Session\workers\headersAvail\headersAvail.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

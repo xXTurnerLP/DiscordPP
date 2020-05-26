@@ -1,3 +1,5 @@
+#pragma once
+
 // STL
 #include <cstring>
 #include <string>
@@ -6,6 +8,7 @@
 #include <iostream>
 #include <iostream>
 #include <thread>
+#include <tuple>
 
 // WINDOWS
 #include <Windows.h>
