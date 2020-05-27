@@ -33,6 +33,9 @@
     <ClCompile Include="src\HTTPMethod\HTTPRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\HTTPMethod\post\post.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch\pch.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\HTTPMethod\HeaderTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HTTPMethod\post\post.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

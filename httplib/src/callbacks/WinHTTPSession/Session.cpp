@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "Session.h"
 
@@ -12,7 +12,8 @@ struct RequestData {
 	// XXXXXXXXXXXX0100 = return SendRequest() function with -1 (SSL Certificate error)
 	// XXXXXXXXXXXX1000 = is the request finished / should the function return
 	USHORT m_nBitFlags;
-	char* m_szData;
+	char* szDataRead;
+	char* szDataWrite;
 };
 
 void WINAPI hSession_Callback(
@@ -24,7 +25,9 @@ void WINAPI hSession_Callback(
 ) {
 	switch (dwInternetStatus) {
 	case WINHTTP_CALLBACK_STATUS_REQUEST_SENT:
-		WinHttpReceiveResponse(hInternet, 0);
+		if ((*(RequestData**)dwContext)->szDataWrite == nullptr) {
+			WinHttpReceiveResponse(hInternet, 0);
+		}
 		break;
 	case WINHTTP_CALLBACK_STATUS_HEADERS_AVAILABLE: {
 		std::thread(headersAvail_worker, *(RequestData**)dwContext, hInternet).detach();
@@ -47,6 +50,16 @@ void WINAPI hSession_Callback(
 		break;
 	case WINHTTP_CALLBACK_STATUS_READ_COMPLETE:
 		WinHttpQueryDataAvailable(hInternet, NULL);
+		break;
+	case WINHTTP_CALLBACK_STATUS_SENDREQUEST_COMPLETE:
+		if ((*(RequestData**)dwContext)->szDataWrite != nullptr) {
+			WinHttpWriteData(hInternet, (*(RequestData**)dwContext)->szDataWrite, strlen((*(RequestData**)dwContext)->szDataWrite), NULL);
+		}
+		break;
+	case WINHTTP_CALLBACK_STATUS_WRITE_COMPLETE:
+		if ((*(RequestData**)dwContext)->szDataWrite != nullptr) {
+			WinHttpReceiveResponse(hInternet, 0);
+		}
 		break;
 	case WINHTTP_CALLBACK_STATUS_REDIRECT:
 		printf("Session handler: Redirection was attempted, and canceled. Redirect Destination: %s\n", (char*)lpvStatusInformation);

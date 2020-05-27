@@ -12,14 +12,16 @@ namespace httplib {
 	HTTPRequest::HTTPRequest(FILE* temp_pSTDOUT) {
 		*stdout = *temp_pSTDOUT;
 
-		RequestData = new requestData_t();
-		RequestData->m_nBitFlags = 0b0000'0000'0000'0000;
-		RequestData->m_szData = nullptr;
+		m_RequestData = new requestData_t();
+		m_RequestData->nBitFlags = 0b0000'0000'0000'0000;
+		m_RequestData->szDataRead = nullptr;
+		m_RequestData->szDataWrite = nullptr;
 	}
 
 	HTTPRequest::~HTTPRequest() {
-		if (RequestData->m_szData != nullptr) delete[] RequestData->m_szData;
-		delete RequestData;
+		delete[] m_RequestData->szDataRead;
+		delete[] m_RequestData->szDataWrite;
+		delete m_RequestData;
 	}
 
 	bool HTTPRequest::AddHeader(HeaderType Header, HeaderValue szValue) {
@@ -54,6 +56,9 @@ namespace httplib {
 		case HeaderType::Referer:
 			_appendToHeader(m_szHeadersOut, (char*)szValue, "Referer");
 			break;
+		case HeaderType::Accept_Charset:
+			_appendToHeader(m_szHeadersOut, (char*)szValue, "Accept-Charset");
+			break;
 		default:
 			return false;
 		}
@@ -62,10 +67,16 @@ namespace httplib {
 	}
 
 	const char* HTTPRequest::GetData() {
-		return RequestData->m_szData;
+		return m_RequestData->szDataRead;
 	}
 
 	RESPONSE HTTPRequest::HTTPRequest_Internal(HTTPMethod szMethod, const char* szData, Address szURI, Port nPort) {
+		if (szData != nullptr) {
+			m_RequestData->szDataWrite = new char[strlen(szData) + sizeof(wchar_t)];
+			m_RequestData->szDataWrite[strlen(szData)] = 0;
+			memcpy(m_RequestData->szDataWrite, szData, strlen(szData));
+		}
+		
 		char* pStartEndpoint = (char*)strchr(szURI, L'/');
 
 		HINTERNET hSession = WinHttpOpen(L"", WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, WINHTTP_FLAG_ASYNC);
@@ -131,11 +142,11 @@ namespace httplib {
 		}
 
 		if (szwHeaders != nullptr) {
-			if (!WinHttpSendRequest(hRequest, szwHeaders, wcslen(szwHeaders), WINHTTP_NO_REQUEST_DATA, NULL, 0, (DWORD_PTR)&RequestData))
+			if (!WinHttpSendRequest(hRequest, szwHeaders, wcslen(szwHeaders), WINHTTP_NO_REQUEST_DATA, NULL, (szData != nullptr) ? strlen(szData) : 0, (DWORD_PTR)&m_RequestData))
 				// TODO: Display the error message in the gui/console of DiscordPP
 				printf("TEMPORARY: GetLastError() from GetRequest::SendRequest at WinHttpOpenRequest() async: %u\n", GetLastError()); // This is temporary. Should not be used.
 		} else {
-			if (!WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, NULL, 0, (DWORD_PTR)&RequestData))
+			if (!WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, NULL, (szData != nullptr) ? strlen(szData) : 0, (DWORD_PTR)&m_RequestData))
 				// TODO: Display the error message in the gui/console of DiscordPP
 				printf("TEMPORARY: GetLastError() from GetRequest::SendRequest at WinHttpOpenRequest() async: %u\n", GetLastError()); // This is temporary. Should not be used.
 		}
@@ -145,16 +156,16 @@ namespace httplib {
 
 		while (1) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-			if ((RequestData->m_nBitFlags >> 3) & 1) {
+			if ((m_RequestData->nBitFlags >> 3) & 1) {
 				WinHttpCloseHandle(hRequest);
 				WinHttpCloseHandle(hConnection);
 				WinHttpCloseHandle(hSession);
-				if ((RequestData->m_nBitFlags >> 2) & 1) {
+				if ((m_RequestData->nBitFlags >> 2) & 1) {
 					return -1;
-				} else if ((RequestData->m_nBitFlags >> 1) & 1) {
+				} else if ((m_RequestData->nBitFlags >> 1) & 1) {
 					return 0;
-				} else if ((RequestData->m_nBitFlags >> 0) & 1) {
-					return RequestData->m_nBitFlags >> 4;
+				} else if ((m_RequestData->nBitFlags >> 0) & 1) {
+					return m_RequestData->nBitFlags >> 4;
 				}
 			}
 		}

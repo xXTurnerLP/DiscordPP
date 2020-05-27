@@ -9,7 +9,8 @@ struct RequestData {
 	// XXXXXXXXXXXX0100 = return SendRequest() function with -1 (SSL Certificate error)
 	// XXXXXXXXXXXX1000 = is the request finished / should the function return
 	USHORT m_nBitFlags;
-	char* m_szData;
+	char* szDataRead;
+	char* szDataWrite;
 };
 
 void headersAvail_worker(RequestData* Data, HINTERNET hRequest) {
@@ -30,7 +31,7 @@ void headersAvail_worker(RequestData* Data, HINTERNET hRequest) {
 	}
 
 	char szBufferCode[8] = {};
-	wcstombs(szBufferCode, szHeaderData, 8);
+	wcstombs(szBufferCode, szHeaderData, 8); //-V575
 
 	unsigned short nStatusCode = atoi(szBufferCode);
 

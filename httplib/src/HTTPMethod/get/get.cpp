@@ -2,8 +2,6 @@
 
 #include "../HeaderTypes.h"
 
-#include "../../callbacks/WinHTTPSession/Session.h"
-
 #include "get.hpp"
 
 namespace httplib {

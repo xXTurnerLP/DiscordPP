@@ -31,8 +31,9 @@ namespace httplib {
 			// XXXXXXXXXXXX0010 = return SendRequest() function with 0 (Ivalid URI)
 			// XXXXXXXXXXXX0100 = return SendRequest() function with -1 (SSL Certificate error)
 			// XXXXXXXXXXXX1000 = is the request finished / should the function return
-			USHORT m_nBitFlags;
-			char* m_szData;
-		} *RequestData;
+			USHORT nBitFlags;
+			char* szDataRead;
+			char* szDataWrite;
+		} *m_RequestData;
 	};
 }

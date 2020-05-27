@@ -11,6 +11,7 @@ namespace httplib {
 		Content_Type,
 		User_Agent,
 		Upgrade,
-		Referer
+		Referer,
+		Accept_Charset
 	};
 }
